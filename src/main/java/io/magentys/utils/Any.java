@@ -20,8 +20,8 @@ public class Any<T> {
 
     public boolean equals(final Object o){
         if(o == null) return false;
-        if(o instanceof Any){
-            Any any = (Any) o;
+        if (o instanceof Any<?>) {
+            Any<?> any = (Any<?>) o;
             if(any.get() == t) return true;
             return any.get().equals(t);
         }

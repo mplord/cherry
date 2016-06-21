@@ -1,36 +1,32 @@
 package io.magentys;
 
-import io.magentys.exceptions.NotAvailableException;
-import io.magentys.utils.Any;
-import io.magentys.utils.Clazz;
+import static io.magentys.utils.Any.any;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.magentys.utils.Any.any;
-import static io.magentys.utils.Requires.requires;
+import io.magentys.exceptions.NotAvailableException;
+import io.magentys.utils.Any;
+import io.magentys.utils.Clazz;
 
-public class CoreMemory implements Memory<String> {
+public class CoreMemory<T> implements Memory<T> {
 
-    private Map<String, Any> map = new ConcurrentHashMap<String, Any>();
-
-    public static CoreMemory coreMemory(){
-        return new CoreMemory();
-    }
+    private Map<T, Any<?>> map = new ConcurrentHashMap<T, Any<?>>();
 
     @Override
-    public <VALUE> void remember(final String key, final VALUE value) {
+    public <VALUE> void remember(final T key, final VALUE value) {
          map.put(key, any(value));
     }
 
     @Override
-    public void remember(String key, Any any) {
+    public void remember(T key, Any<?> any) {
         map.put(key, any);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <VALUE> VALUE recall(final String key, final Class<VALUE> clazz) {
-        final Any result = map.get(key);
+    public <VALUE> VALUE recall(final T key, final Class<VALUE> clazz) {
+        final Any<?> result = map.get(key);
         if(result == null) {
             return null;
         }
@@ -47,14 +43,14 @@ public class CoreMemory implements Memory<String> {
     }
 
     @Override
-    public Any recall(String key) {
+    public Any<?> recall(T key) {
         return map.get(key);
     }
 
     @Override
-    public void transferTo(Memory memory, String key) {
-        requires(memory instanceof CoreMemory, "It's not a Core Memory");
-        CoreMemory casted = (CoreMemory) memory;
-        memory.remember(key, map.get(key));
+    public <K> void transferTo(T myKey, Memory<K> memory, K theirKey) {
+        // requires(memory instanceof CoreMemory, "It's not a Core Memory");
+        // CoreMemory casted = (CoreMemory) memory;
+        memory.remember(theirKey, map.get(myKey));
     }
 }

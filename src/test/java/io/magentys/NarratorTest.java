@@ -1,16 +1,17 @@
 package io.magentys;
 
-import io.magentys.annotations.Narrate;
+import static io.magentys.narrators.SysoutNarrator.sysout;
+
 import org.junit.Test;
 
-import static io.magentys.AgentProvider.provideAgent;
-import static io.magentys.narrators.SysoutNarrator.sysout;
+import io.magentys.annotations.Narrate;
 
 public class NarratorTest {
 
+    @SuppressWarnings("unchecked")
     @Test
     public void shouldNarrateSuccessfully() throws Exception {
-        Agent agent = provideAgent().called("immaculate").get();
+        AgentString agent = provideAgent().called("immaculate").get();
         agent.addNarrators(sysout());
         final MyMission mission = new MyMission();
         agent.performs(mission);
@@ -21,17 +22,17 @@ public class NarratorTest {
 
 
     @Narrate("Print this before")
-    private class MyMission implements Mission<Agent>{
+    private class MyMission implements Mission<Agent<String>, String> {
         @Override
-        public Agent accomplishAs(Agent agent) {
+        public Agent<String> accomplishAs(Agent<String> agent) {
             return agent;
         }
     }
 
     @Narrate(value = "print before", after = "print after")
-    private class MyMissionWithBeforeAndAfter implements Mission<Agent>{
+    private class MyMissionWithBeforeAndAfter implements Mission<Agent<String>, String> {
         @Override
-        public Agent accomplishAs(Agent agent) {
+        public Agent<String> accomplishAs(Agent<String> agent) {
             agent.narrateThat("hello world");
             agent.narrateThat("info", "hello world!");
             return agent;

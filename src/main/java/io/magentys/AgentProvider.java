@@ -1,63 +1,66 @@
 package io.magentys;
 
+import static io.magentys.StringMemory.stringMemory;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import static io.magentys.CoreMemory.coreMemory;
-
 
 /**
  * Agent Provider creates agents as a Builder
  */
-public class AgentProvider {
+public class AgentProvider<M extends Memory<K>, K> {
 
-    private AgentProvider(){
-        anAgent = agent();
+    protected AgentProvider(M memory) {
+        anAgent = new Agent<M, K>(memory);
     }
 
-    private AgentProvider(Agent agent){
+    private AgentProvider(Agent<M, K> agent) {
         anAgent = agent;
     }
 
-    private Agent anAgent;
+    private Agent<M, K> anAgent;
 
     /**
      * Provides a vanilla agent with CoreMemory
+     * 
      * @return an empty agent
      */
-    public static Agent agent() {
-        return new Agent(coreMemory());
+    public static AgentString agentWithStringMemory() {
+        return new AgentString(stringMemory());
     }
 
     /**
      * Create a new agent with a type of memory
+     * 
      * @param memory
      * @return
      */
-    public static Agent agentWithMemory(Memory memory){
-        return new Agent(memory);
+    public static <M extends Memory<K>, K> Agent<M, K> agentWithMemory(M memory) {
+        return new Agent<M, K>(memory);
     }
 
     /**
      * The starting point for creating agents
+     * 
      * @return an AgentProvider
      */
-    public static AgentProvider provideAgent() {
-        return new AgentProvider();
+    public static AgentProviderString provideAgent() {
+        return new AgentProvider<StringMemory, String>(stringMemory());
     }
 
-    public AgentProvider called(String name){
-       anAgent = anAgent.clone();
-       anAgent.setName(name);
-       return this;
+    public AgentProvider<M, K> called(String name) {
+        anAgent = anAgent.clone();
+        anAgent.setName(name);
+        return this;
     }
 
     /**
      * Create a new agent with the memory provided
+     * 
      * @param memory
      * @return a new agent
      */
-    public AgentProvider withMemory(Memory memory){
+    public AgentProvider<M, K> withMemory(M memory) {
         anAgent = anAgent.clone();
         anAgent.setMemory(memory);
         return this;
@@ -65,17 +68,18 @@ public class AgentProvider {
 
     /**
      * Create a new agent with the tools provided
+     * 
      * @param tools
      * @return a new agent
      */
-    public AgentProvider withTools(Object... tools){
+    public AgentProvider<M, K> withTools(Object... tools) {
         anAgent = anAgent.clone().obtains(tools);
         return this;
     }
 
-    public AgentProvider withNarrators(Narrator... narrators){
+    public AgentProvider<M, K> withNarrators(Narrator... narrators) {
         Set<Narrator> narratorSet = new HashSet<Narrator>();
-        for(Narrator narrator : narrators){
+        for (Narrator narrator : narrators) {
             narratorSet.add(narrator);
         }
         anAgent = anAgent.clone().setNarrators(narratorSet);
@@ -84,11 +88,11 @@ public class AgentProvider {
 
     /**
      * Return the agent
+     * 
      * @return the built agent
      */
-    public Agent get(){
+    public Agent<M, K> get() {
         return anAgent;
     }
-
 
 }

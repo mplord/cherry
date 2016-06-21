@@ -1,35 +1,35 @@
 package io.magentys;
 
-import io.magentys.exceptions.NotAvailableException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import java.util.UUID;
-
-import static io.magentys.AgentProvider.agent;
+import static io.magentys.AgentProvider.agentWithStringMemory;
 import static io.magentys.AgentProvider.provideAgent;
 import static io.magentys.AgentTest.Print.printsTheDocument;
 import static io.magentys.AgentTest.Printer.aPrinter;
 import static io.magentys.AgentTest.Scan.scansThe;
 import static io.magentys.AgentTest.Scanner.aScanner;
-import static io.magentys.AgentVerifier.verifyAs;
-import static io.magentys.utils.Sugars.*;
+import static io.magentys.utils.Sugars.and;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 
+import java.util.UUID;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import io.magentys.exceptions.NotAvailableException;
+
 public class AgentTest {
 
-    private Agent agent;
+    private Agent<StringMemory, String> agent;
 
     @Rule
     public ExpectedException notAvailableToBeThrown = ExpectedException.none();
 
     @Before
     public void beforeEachTest() {
-        agent = agent();
+        agent = agentWithStringMemory();
     }
 
     @Test
@@ -56,7 +56,7 @@ public class AgentTest {
         notAvailableToBeThrown.expect(NotAvailableException.class);
         notAvailableToBeThrown.expectMessage("I don't know this skill: class io.magentys.AgentTest$Printer");
 
-        agent.performs(new Print());
+        agent.performs(printsTheDocument());
     }
 
     @Test
@@ -64,37 +64,35 @@ public class AgentTest {
         String randomKey = UUID.randomUUID().toString();
         String randomValue = UUID.randomUUID().toString();
         agent.keepsInMind(randomKey,randomValue);
-        Agent anotherAgent = provideAgent().get();
-        anotherAgent.askThe(agent, randomKey);
+        Agent<StringMemory, String> anotherAgent = provideAgent().get();
+        anotherAgent.askThe(agent, randomKey, randomKey);
         assertThat(anotherAgent.recalls(randomKey, String.class), is(randomValue));
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void shouldAddSyntacticalSugar() throws Exception {
-        final Agent Tom = agent();
+        final Agent<StringMemory, String> Tom = agentWithStringMemory();
         Tom.obtains(aPrinter(), and(aScanner()))
-                .andHe(scansThe("important Document"), and(printsTheDocument()));
-
-
+            .andHe(scansThe("important Document"), and(printsTheDocument()));
     }
 
-    public static class Print implements Mission<Agent> {
+    public static class Print implements Mission<Agent<StringMemory, String>, StringMemory, String> {
 
-
-        public static Print printsTheDocument() {
+        public static Print printsTheDocument(/* Agent<MEM, KEY> agent */) {
             return new Print();
         }
 
         @Override
-        public Agent accomplishAs(final Agent agent) {
+        public Agent<StringMemory, String> accomplishAs(final Agent<StringMemory, String> agent) {
             final Printer printer = agent.usingThe(Printer.class);
             printer.print(agent.recalls("ScannedDocument", String.class));
             return agent;
         }
     }
 
-    public static class Scan implements Mission<Agent> {
+    public static class Scan implements Mission<Agent<StringMemory, String>, StringMemory, String> {
 
         private final String document;
 
@@ -107,7 +105,7 @@ public class AgentTest {
         }
 
         @Override
-        public Agent accomplishAs(final Agent agent) {
+        public Agent<StringMemory, String> accomplishAs(final Agent<StringMemory, String> agent) {
             agent.keepsInMind("ScannedDocument", this.document);
             return agent;
         }
