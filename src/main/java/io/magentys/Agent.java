@@ -1,17 +1,22 @@
 package io.magentys;
 
+import static io.magentys.utils.Any.any;
+import static io.magentys.utils.Requires.requires;
+import static io.magentys.utils.Requires.requiresNotNull;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.google.gson.reflect.TypeToken;
+
 import io.magentys.annotations.Narrate;
 import io.magentys.exceptions.NotAvailableException;
 import io.magentys.utils.Any;
 import io.magentys.utils.Clazz;
 import io.magentys.utils.Strings;
 import io.magentys.utils.UniqueId;
-
-import java.util.*;
-
-import static io.magentys.utils.Any.any;
-import static io.magentys.utils.Requires.requires;
-import static io.magentys.utils.Requires.requiresNotNull;
 
 public class Agent {
 
@@ -121,6 +126,21 @@ public class Agent {
         throw new NotAvailableException("I don't know this skill: " + toolClass);
     }
 
+    public <TOOL> TOOL usingThe(final TypeToken<TOOL> toolToken) {
+
+        for (final Any tool : tools) {
+            System.out.println(toolToken.getType());
+            System.out.println(tool.get().getClass());
+
+            if (toolToken.getType().getClass().isInstance(tool.get().getClass())) {
+            //if (toolToken.getType().getClass().isAssignableFrom(tool.get().getClass())) {
+                return (TOOL) tool.get();
+            }
+        }
+
+        throw new NotAvailableException("I don't know this skill: " + toolToken.getType());
+    }
+
     public <VALUE> void keepsInMind(final String key, final VALUE value) {
         this.memory.remember(key, value);
     }
@@ -142,6 +162,17 @@ public class Agent {
         return performAll(missions);
     }
 
+    public Agent given(final Mission... missions) {
+        return performAll(missions);
+    }
+
+    public Agent whenHe(final Mission... missions) {
+        return performAll(missions);
+    }
+
+    public Agent thenHe(final Mission... missions) {
+        return performAll(missions);
+    }
 
     public List<Any> getTools() {
         return tools;
