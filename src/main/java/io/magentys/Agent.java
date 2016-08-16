@@ -9,8 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.gson.reflect.TypeToken;
-
 import io.magentys.annotations.Narrate;
 import io.magentys.exceptions.NotAvailableException;
 import io.magentys.utils.Any;
@@ -32,7 +30,6 @@ public class Agent {
     }
 
     protected String name = UniqueId.incrementalId();
-
 
     public Set<Narrator> getNarrators() {
         return narrators;
@@ -56,27 +53,28 @@ public class Agent {
     }
 
     protected <RESULT> void narrateBefore(Mission<RESULT> mission) {
-        if(mission.getClass().isAnnotationPresent(Narrate.class)){
+        if (mission.getClass().isAnnotationPresent(Narrate.class)) {
             Narrate narrate = mission.getClass().getAnnotation(Narrate.class);
             narrateThat(narrate.value());
         }
     }
 
     protected <RESULT> void narrateAfter(Mission<RESULT> mission) {
-        if(mission.getClass().isAnnotationPresent(Narrate.class)){
+        if (mission.getClass().isAnnotationPresent(Narrate.class)) {
             Narrate narrate = mission.getClass().getAnnotation(Narrate.class);
-            if(!Strings.empty.equals(narrate.after()) && narrate.after() != null) narrateThat(narrate.after());
+            if (!Strings.empty.equals(narrate.after()) && narrate.after() != null)
+                narrateThat(narrate.after());
         }
     }
 
-    public void narrateThat(String message){
-        for(Narrator narrator : narrators) {
+    public void narrateThat(String message) {
+        for (Narrator narrator : narrators) {
             narrator.narrate(name, "info", message);
         }
     }
 
-    public void narrateThat(String level, String message){
-        for(Narrator narrator : narrators){
+    public void narrateThat(String level, String message) {
+        for (Narrator narrator : narrators) {
             narrator.narrate(name, "info", message);
         }
     }
@@ -97,20 +95,20 @@ public class Agent {
         return this;
     }
 
-    public Agent reportsUsing(final Narrator... narrators){
+    public Agent reportsUsing(final Narrator... narrators) {
         requiresNotNull(narrators, "narrators were null");
-        for(final Narrator narrator : narrators){
+        for (final Narrator narrator : narrators) {
             this.narrators.add(narrator);
         }
         return this;
     }
 
-    public Agent setTools(List<Any> tools){
+    public Agent setTools(List<Any> tools) {
         this.tools = tools;
         return this;
     }
 
-    public Agent setNarrators(Set<Narrator> narrators){
+    public Agent setNarrators(Set<Narrator> narrators) {
         this.narrators = narrators;
         return this;
     }
@@ -124,21 +122,6 @@ public class Agent {
         }
 
         throw new NotAvailableException("I don't know this skill: " + toolClass);
-    }
-
-    public <TOOL> TOOL usingThe(final TypeToken<TOOL> toolToken) {
-
-        for (final Any tool : tools) {
-            System.out.println(toolToken.getType());
-            System.out.println(tool.get().getClass());
-
-            if (toolToken.getType().getClass().isInstance(tool.get().getClass())) {
-            //if (toolToken.getType().getClass().isAssignableFrom(tool.get().getClass())) {
-                return (TOOL) tool.get();
-            }
-        }
-
-        throw new NotAvailableException("I don't know this skill: " + toolToken.getType());
     }
 
     public <VALUE> void keepsInMind(final String key, final VALUE value) {
@@ -166,11 +149,11 @@ public class Agent {
         return performAll(missions);
     }
 
-    public Agent whenHe(final Mission... missions) {
+    public Agent when(final Mission... missions) {
         return performAll(missions);
     }
 
-    public Agent thenHe(final Mission... missions) {
+    public Agent then(final Mission... missions) {
         return performAll(missions);
     }
 
@@ -182,23 +165,22 @@ public class Agent {
         return memory;
     }
 
-    public Agent addNarrators(Narrator... narrators){
+    public Agent addNarrators(Narrator... narrators) {
         requiresNotNull(narrators, "Narrators passed were null");
-        for(Narrator narrator : narrators){
+        for (Narrator narrator : narrators) {
             requiresNotNull(narrator, "narrator was null");
             this.narrators.add(narrator);
         }
         return this;
     }
 
-    public Agent clone(){
+    public Agent clone() {
         return new Agent(memory).setTools(tools).setNarrators(narrators);
     }
 
-    public <KEY> Agent askThe(final Agent anotherAgent, KEY key){
+    public <KEY> Agent askThe(final Agent anotherAgent, KEY key) {
         anotherAgent.getMemory().transferTo(memory, key);
         return this;
     }
-
 
 }
