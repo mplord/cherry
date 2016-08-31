@@ -155,5 +155,10 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+		<dependency>
+			<groupId>io.magentys</groupId>
+			<artifactId>magentys-commons</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
     </dependencies>
 </project>

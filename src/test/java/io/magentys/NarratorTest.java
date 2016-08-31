@@ -1,10 +1,11 @@
 package io.magentys;
 
-import io.magentys.annotations.Narrate;
-import org.junit.Test;
-
 import static io.magentys.AgentProvider.provideAgent;
 import static io.magentys.narrators.SysoutNarrator.sysout;
+
+import org.junit.Test;
+
+import io.magentys.annotations.Narrate;
 
 public class NarratorTest {
 
@@ -21,7 +22,7 @@ public class NarratorTest {
 
 
     @Narrate("Print this before")
-    private class MyMission implements Mission<Agent>{
+    private class MyMission implements Mission<Agent, Agent> {
         @Override
         public Agent accomplishAs(Agent agent) {
             return agent;
@@ -29,7 +30,7 @@ public class NarratorTest {
     }
 
     @Narrate(value = "print before", after = "print after")
-    private class MyMissionWithBeforeAndAfter implements Mission<Agent>{
+    private class MyMissionWithBeforeAndAfter implements Mission<Agent, Agent> {
         @Override
         public Agent accomplishAs(Agent agent) {
             agent.narrateThat("hello world");

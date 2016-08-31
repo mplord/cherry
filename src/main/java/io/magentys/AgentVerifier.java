@@ -1,26 +1,26 @@
 package io.magentys;
 
-import org.hamcrest.Matcher;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class AgentVerifier {
+import org.hamcrest.Matcher;
 
-    public Agent getAgent() {
+public class AgentVerifier<AGENT extends AgentBase<AGENT>> {
+
+    public AGENT getAgent() {
         return agent;
     }
 
-    protected final Agent agent;
+    protected final AGENT agent;
 
-    public AgentVerifier(Agent agent) {
+    public AgentVerifier(AGENT agent) {
         this.agent = agent;
     }
 
-    public static AgentVerifier verifyAs(Agent agent) {
+    public static <AGENT extends AgentBase<AGENT>> AgentVerifier verifyAs(AGENT agent) {
        return new AgentVerifier(agent);
     }
 
-    public <TYPE> void that(Mission<TYPE> obj, Matcher<TYPE> objectMatcher) {
+    public <TYPE> void that(Mission<TYPE, AGENT> obj, Matcher<TYPE> objectMatcher) {
         assertThat(obj.accomplishAs(agent), objectMatcher);
     }
 
