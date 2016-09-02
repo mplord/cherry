@@ -1,13 +1,13 @@
 package io.magentys;
 
-import org.junit.Test;
-
 import static io.magentys.AgentProvider.provideAgent;
 import static io.magentys.AgentVerifier.verifyAs;
 import static io.magentys.utils.Sugars.given;
 import static io.magentys.utils.Sugars.then;
 import static io.magentys.utils.Sugars.when;
 import static org.hamcrest.core.Is.is;
+
+import org.junit.Test;
 
 /**
  * Created by kostasmamalis on 19/05/16.
@@ -25,28 +25,28 @@ public class SugarsTest {
     }
 
     public static class The {
-        static final Mission<Agent> firstStep = new Mission<Agent>() {
+        static final Mission<Agent, Agent> firstStep = new Mission<Agent, Agent>() {
             @Override
             public Agent accomplishAs(Agent agent) {
                 return agent;
             }
         };
 
-        static final Mission<Agent> secondStep = new Mission<Agent>() {
+        static final Mission<Agent, Agent> secondStep = new Mission<Agent, Agent>() {
             @Override
             public Agent accomplishAs(Agent agent) {
                 return agent;
             }
         };
 
-        static final Mission<Agent> missionUnderTest = new Mission<Agent>() {
+        static final Mission<Agent, Agent> missionUnderTest = new Mission<Agent, Agent>() {
             @Override
             public Agent accomplishAs(Agent agent) {
                 return agent;
             }
         };
 
-        static final Mission<String> result = new Mission<String>() {
+        static final Mission<String, Agent> result = new Mission<String, Agent>() {
             @Override
             public String accomplishAs(Agent agent) {
                 return "Success!";

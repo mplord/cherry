@@ -1,27 +1,27 @@
 package io.magentys.mplord;
 
-import io.magentys.Agent;
-import io.magentys.Mission;
+import io.magentys.mplord.agent.AgentTypedMemory;
+import io.magentys.mplord.mission.MissionTypedMemory;
 
-public abstract class Skill implements Mission<Agent> {
+public abstract class Skill implements MissionTypedMemory<AgentTypedMemory> {
 
-    private Agent agent;
+    private AgentTypedMemory agent;
 
     public Skill() {
     }
 
-    public Skill(Agent agent) {
+    public Skill(AgentTypedMemory agent) {
         this.agent = agent;
     }
 
-    public void useAgent(Agent agent) {
+    public void useAgent(AgentTypedMemory agent) {
         this.agent = agent;
     }
 
-    public Agent accomplish() {
+    public AgentTypedMemory accomplish() {
         return accomplishAs(agent);
     }
 
     @Override
-    public abstract Agent accomplishAs(Agent agent);
+    public abstract AgentTypedMemory accomplishAs(AgentTypedMemory agent);
 }

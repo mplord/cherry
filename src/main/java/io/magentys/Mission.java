@@ -1,6 +1,6 @@
 package io.magentys;
 
-public interface Mission<RESULT> {
+public interface Mission<RESULT, AGENT extends AgentBase<AGENT>> {
 
-    RESULT accomplishAs(Agent agent);
+    RESULT accomplishAs(AGENT agent);
 }

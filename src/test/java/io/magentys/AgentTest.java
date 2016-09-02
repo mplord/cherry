@@ -1,24 +1,24 @@
 package io.magentys;
 
-import io.magentys.exceptions.NotAvailableException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import java.util.UUID;
-
 import static io.magentys.AgentProvider.agent;
 import static io.magentys.AgentProvider.provideAgent;
 import static io.magentys.AgentTest.Print.printsTheDocument;
 import static io.magentys.AgentTest.Printer.aPrinter;
 import static io.magentys.AgentTest.Scan.scansThe;
 import static io.magentys.AgentTest.Scanner.aScanner;
-import static io.magentys.AgentVerifier.verifyAs;
-import static io.magentys.utils.Sugars.*;
+import static io.magentys.utils.Sugars.and;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
+
+import java.util.UUID;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import io.magentys.exceptions.NotAvailableException;
 
 public class AgentTest {
 
@@ -79,7 +79,7 @@ public class AgentTest {
 
     }
 
-    public static class Print implements Mission<Agent> {
+    public static class Print implements Mission<Agent, Agent> {
 
 
         public static Print printsTheDocument() {
@@ -94,7 +94,7 @@ public class AgentTest {
         }
     }
 
-    public static class Scan implements Mission<Agent> {
+    public static class Scan implements Mission<Agent, Agent> {
 
         private final String document;
 

@@ -1,11 +1,11 @@
 package io.magentys.mplord;
 
-import io.magentys.Agent;
+import io.magentys.mplord.agent.AgentTypedMemory;
 
 public class Skills {
-    private Agent agent;
+    private AgentTypedMemory agent;
 
-    public Skills(Agent agent) {
+    public Skills(AgentTypedMemory agent) {
         this.agent = agent;
     }
 
