@@ -1,14 +1,22 @@
-# Maven stuff
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-
-# IntelliJ
+# IDE working files
+*.iws
+*.ipr
 *.iml
 .idea/
+.settings
+.project
+.classpath
+.metadata/
+
+# Build directories
+target
+
+# Build and test files
+*.log*
+*.lck
+
+# OS generated files
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
