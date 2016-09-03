@@ -1,5 +1,7 @@
 package io.magentys;
 
+import io.magentys.mplord.agent.AgentBase;
+
 public class Agent extends AgentBase<Agent> {
 
     protected Memory memory;

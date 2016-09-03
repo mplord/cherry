@@ -4,6 +4,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.hamcrest.Matcher;
 
+import io.magentys.mplord.agent.AgentBase;
+
 public class AgentVerifier<AGENT extends AgentBase<AGENT>> {
 
     public AGENT getAgent() {

@@ -1,6 +1,5 @@
 package io.magentys.mplord.agent;
 
-import io.magentys.AgentBase;
 import io.magentys.commons.typemap.TypedKey;
 import io.magentys.mplord.commons.Memory;
 

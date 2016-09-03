@@ -1,4 +1,4 @@
-package io.magentys;
+package io.magentys.mplord.agent;
 
 import static io.magentys.utils.Any.any;
 import static io.magentys.utils.Requires.requires;
@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import io.magentys.Mission;
+import io.magentys.Narrator;
 import io.magentys.annotations.Narrate;
 import io.magentys.exceptions.NotAvailableException;
 import io.magentys.utils.Any;
