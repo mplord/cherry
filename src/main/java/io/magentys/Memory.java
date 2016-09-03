@@ -9,7 +9,7 @@ public interface Memory<KEY> {
 
     <VALUE> void remember(final KEY key, final VALUE value);
 
-    void remember(final KEY key, final Any any);
+    void remember(final KEY key, final Any<?> any);
 
     <VALUE> VALUE recall(KEY key, Class<VALUE> clazz);
 
@@ -17,7 +17,6 @@ public interface Memory<KEY> {
 
     void transferTo(Memory<KEY> memory, KEY key);
 
-    Any recall(KEY key);
-
+    Any<?> recall(KEY key);
 
 }

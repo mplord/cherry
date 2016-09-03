@@ -1,6 +1,6 @@
 package io.magentys;
 
-public interface Mission<RESULT> {
+public interface Mission<RESULT, KEY> {
 
-    RESULT accomplishAs(Agent agent);
+    RESULT accomplishAs(Agent<KEY> agent);
 }

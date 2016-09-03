@@ -6,7 +6,13 @@ package io.magentys.exceptions;
 public class NotAvailableException extends RuntimeException {
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * Main Contructor
+     * 
      * @param message
      */
     public NotAvailableException(final String message) {
@@ -15,9 +21,10 @@ public class NotAvailableException extends RuntimeException {
 
     /**
      * Not available Memory entry for class
+     * 
      * @param clazz
      */
-    public NotAvailableException(final Class clazz){
+    public <T> NotAvailableException(final Class<T> clazz) {
         super(String.format("Tool of type: \"%s\" not found in agent's toolset... Use agent.obtains(<tool>) method to assign tools to agent.",
                 clazz.toString()));
     }

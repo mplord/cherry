@@ -5,11 +5,16 @@ package io.magentys.exceptions;
  */
 public class ScreenException extends RuntimeException {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     public ScreenException(final String message) {
         super(message);
     }
 
-    public ScreenException(final Class clazz){
+    public <T> ScreenException(final Class<T> clazz) {
         super(String.format("Tool of type: \"%s\" not found in agent's toolset... Use agent.obtains(<tool>) method to assign tools to agent.",
                 clazz.toString()));
     }
