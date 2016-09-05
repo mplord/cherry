@@ -3,6 +3,7 @@ package io.magentys.mplord.commons;
 import io.magentys.commons.typemap.TypedKey;
 import io.magentys.commons.typemap.TypedKeyMap;
 
+// typed memory class is becoming part of magentys-commons
 public class Memory {
 
     private final TypedKeyMap values = new TypedKeyMap();
